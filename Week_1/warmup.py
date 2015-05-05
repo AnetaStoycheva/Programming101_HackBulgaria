@@ -100,12 +100,12 @@ def to_digits(n):
     return result[-1:: -1]
 
 
-def to_digits_compehension(n):
+def to_digits_comprehension(n):
     return [int(x) for x in str(n)]
 
 
 def count_digits(n):  # 6te ni trqbva za dolnata f-ciq
-    return sum([1 for x in to_digits_compehension(n)])
+    return sum([1 for x in to_digits_comprehension(n)])
 
 
 def to_number(digits):
@@ -126,7 +126,7 @@ def fib_number(n):
     for a in list_fibs:
         result += str(a)
 
-    return result
+    return int(result)
 
 
 # vyzmojno e, za6toto modificirehme to_number(digits): / da osvobojdava nuli

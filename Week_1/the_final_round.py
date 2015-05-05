@@ -273,13 +273,15 @@ def same_characters(string):  # T ot F
 
 def is_an_bn(word):
 
-    if len(word) % 2 == 0:
-        a = word[:int(len(word) / 2)]
-        print(a)
-        b = word[int(len(word) / 2):]
-        print(b)
+    if word == '':
+        return True
 
-        return same_characters(a) and same_characters(b)
+    if len(word) % 2 == 0:
+        first_half = word[:int(len(word) / 2)]
+        second_half = word[int(len(word) / 2):]
+        if 'a' in first_half and 'b' in second_half:
+
+            return same_characters(first_half) and same_characters(second_half)
 
     return False
 
