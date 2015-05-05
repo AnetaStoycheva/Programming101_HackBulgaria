@@ -9,7 +9,6 @@ class FractionTest(unittest.TestCase):
         self.c = Fraction(3, 5)
 
     def test_equal_fractions(self):
-
         self.assertEqual(self.a, self.b)
         self.assertEqual(self.a, self.a)
 
