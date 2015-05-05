@@ -1,5 +1,7 @@
-class Bill:  # model na 1 banknota
+class Bill:
     def __init__(self, amount, currency):
+        if not isinstance(amount, int):
+            raise TypeError('The amount of this bill is not an integer.')
         self.amount = amount
         self.currency = currency
 
@@ -7,16 +9,18 @@ class Bill:  # model na 1 banknota
         return self.amount
 
     def __str__(self):
-        return "{}{}".format(self.amount, self.currency)
+        return '{}{}'.format(self.amount, self.currency)
 # ako tuk e "A {}{} bill." - dolu navsqkyde 6te print cqloto izr, a ne samo 10$
 
     def __repr__(self):
         return self.__str__()
 
     def __eq__(self, other):
+        if not isinstance(other, Bill):
+            return False
         return self.amount == other.amount and self.currency == other.currency
 
-    def __hash__(self):  # za da napravim re4nik ot banknoti
+    def __hash__(self):
         return hash(self.__str__())
 
 
@@ -38,7 +42,6 @@ class BatchBill:
 
 
 class CashDesk:
-
     def __init__(self):
         self.money_holder = {}
 
