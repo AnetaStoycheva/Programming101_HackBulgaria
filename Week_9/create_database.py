@@ -9,7 +9,8 @@ def create_clients_table(conn):
 
 
 def main():
-    create_clients_table()
+    conn = sqlite3.connect(DB_NAME)
+    create_clients_table(conn)
 
 if __name__ == '__main__':
     main()

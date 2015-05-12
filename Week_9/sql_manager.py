@@ -38,6 +38,8 @@ class SqlManager:
             VALUES ('{}', '{}')
         """.format(username, password)
 
+# Da ne pravi registraciq, ako imeto ve4e e zaeto!!!
+
         cursor = self.__conn.cursor()
 
         cursor.execute(insert_sql)
