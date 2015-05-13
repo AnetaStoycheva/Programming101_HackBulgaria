@@ -59,5 +59,9 @@ class SqlManagerTests(unittest.TestCase):
         logged_user_new_password = self.sql_manager.login('Tester', new_password)
         self.assertEqual(logged_user_new_password.get_username(), 'Tester')
 
+    def test_login_with_sql_injection(self):
+        logged_user = self.sql_manager.login("' OR 1 = 1 --", '1234')
+        self.assertFalse(logged_user)
+
 if __name__ == '__main__':
     unittest.main()
