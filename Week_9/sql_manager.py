@@ -27,27 +27,57 @@ class SqlManager:
             WHERE client_id = ?
         """
 
-        cursor = self.__conn.cursor()
+        if self.is_password_safe(logged_user.get_username(), new_pass):
+            cursor = self.__conn.cursor()
 
-        cursor.execute(update_sql, (new_pass, logged_user.get_client_id()))
-        self.__conn.commit()
+            cursor.execute(update_sql, (new_pass, logged_user.get_client_id()))
+            self.__conn.commit()
+            return True
+
+        else:
+            return False
 
     def register(self, username, password):
         insert_sql = """
             INSERT INTO Clients (username, password)
             VALUES (?, ?)
         """
-        # try:
 
-        # except CannotUseThis:
-        #     raise
+        if self.is_password_safe(username, password):
+            cursor = self.__conn.cursor()
 
-# Da ne pravi registraciq, ako imeto ve4e e zaeto!!!
+            cursor.execute(insert_sql, (username, password))
+            self.__conn.commit()
+            return True
 
-        cursor = self.__conn.cursor()
+        else:
+            return False
 
-        cursor.execute(insert_sql, (username, password))
-        self.__conn.commit()
+    def is_password_safe(self, username, password):
+        if len(password) < 9:
+            return False
+
+        if username in password:
+            return False
+
+        found_capital_letter = False
+        found_number = False
+        found_special_symbol = False
+
+        for letter in password:
+            if letter.isupper():
+                found_capital_letter = True
+            else:
+                if letter.isdigit():
+                    found_number = True
+                else:
+                    if letter in '!@#$%^&*()_+=\|]}[{";:><.,/?~`\'':
+                        found_special_symbol = True
+
+        if found_special_symbol and found_number and found_capital_letter:
+            return True
+        else:
+            return False
 
     def login(self, username, password):
         select_query = """

@@ -37,9 +37,12 @@ class CliInterface:
         username = input('Enter your username: ')
         password = input('Enter your password: ')  # safe password!!!
 
-        self.__sql_manager.register(username, password)
+        result = self.__sql_manager.register(username, password)
 
-        print("Registration Successfull")
+        if result:
+            print('Registration Successful')
+        if not result:
+            print('Registration failed')
 
     def __login(self):
         username = input('Enter your username: ')
@@ -94,7 +97,12 @@ class CliInterface:
 
     def __changepass(self, logged_user):
         new_pass = input('Enter your new password: ')
-        self.__sql_manager.change_pass(new_pass, logged_user)
+        result = self.__sql_manager.change_pass(new_pass, logged_user)
+
+        if result:
+            print('You succesfully changed your password!')
+        else:
+            print('Changing password failed!')
 
     def __change_message(self, logged_user):
         new_message = input('Enter your new message: ')
