@@ -1,3 +1,6 @@
+import getpass
+
+
 class CliInterface:
     def __init__(self, sql_manager):
         self.__sql_manager = sql_manager
@@ -27,7 +30,7 @@ class CliInterface:
 
     def __register(self):
         username = input('Enter your username: ')
-        password = input('Enter your password: ')  # safe password!!!
+        password = getpass.getpass('Enter your password: ')
 
         result = self.__sql_manager.register(username, password)
 
@@ -38,7 +41,7 @@ class CliInterface:
 
     def __login(self):
         username = input('Enter your username: ')
-        password = input('Enter your password: ')  # safe password!!!
+        password = getpass.getpass('Enter your password: ')
 
         logged_user = self.__sql_manager.login(username, password)
 
@@ -88,8 +91,8 @@ class CliInterface:
         print("Your balance is: " + str(logged_user.get_balance()) + '$')
 
     def __changepass(self, logged_user):
-        new_pass = input('Enter your new password: ')
-        new_pass2 = input('Enter your new password again: ')
+        new_pass = getpass.getpass('Enter your password: ')
+        new_pass2 = getpass.getpass('Enter your password: ')
         if new_pass == new_pass2:
             result = self.__sql_manager.change_pass(new_pass, logged_user)
 
