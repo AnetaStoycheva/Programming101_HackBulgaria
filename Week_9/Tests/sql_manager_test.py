@@ -31,8 +31,8 @@ class SqlManagerTests(unittest.TestCase):
         cursor.execute("""
             SELECT COUNT(*)
             FROM Clients
-            WHERE username = (?) AND password = (?)
-        """, ('Dinko', '123123A;as'))
+            WHERE username = (?)
+        """, ('Dinko', ))
         users_count = cursor.fetchone()
 
         self.assertEqual(users_count[0], 1)
@@ -75,6 +75,18 @@ class SqlManagerTests(unittest.TestCase):
 
     def test_password_contains_username(self):
         self.assertFalse(self.sql_manager.is_password_safe('Tester', '1234\\Tester'))
+
+    def test_is_password_hashed(self):
+        self.assertTrue(self.sql_manager.register('Dinko', '123123A;as'))
+        cursor = self.connection.cursor()
+        cursor.execute("""
+            SELECT password
+            FROM Clients
+            WHERE username = (?)
+        """, ('Dinko', ))
+        users_password = cursor.fetchone()
+
+        self.assertNotEqual(users_password[0], '123123A;as')
 
 
 if __name__ == '__main__':

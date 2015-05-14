@@ -1,6 +1,7 @@
 import sqlite3
 from Client import Client
 import create_database
+import hashlib
 
 
 class SqlManager:
@@ -30,7 +31,7 @@ class SqlManager:
         if self.is_password_safe(logged_user.get_username(), new_pass):
             cursor = self.__conn.cursor()
 
-            cursor.execute(update_sql, (new_pass, logged_user.get_client_id()))
+            cursor.execute(update_sql, (self.hash_password(new_pass), logged_user.get_client_id()))
             self.__conn.commit()
             return True
 
@@ -46,7 +47,7 @@ class SqlManager:
         if self.is_password_safe(username, password):
             cursor = self.__conn.cursor()
 
-            cursor.execute(insert_sql, (username, password))
+            cursor.execute(insert_sql, (username, self.hash_password(password)))
             self.__conn.commit()
             return True
 
@@ -79,6 +80,13 @@ class SqlManager:
         else:
             return False
 
+    def hash_password(self, password):
+        password_bytes = bytearray(password, 'utf-8')
+        hash_object = hashlib.sha1(password_bytes)
+        hex_dig = hash_object.hexdigest()
+
+        return hex_dig
+
     def login(self, username, password):
         select_query = """
             SELECT client_id, username, balance, message
@@ -89,14 +97,10 @@ class SqlManager:
 
         cursor = self.__conn.cursor()
 
-        cursor.execute(select_query, (username, password))
+        cursor.execute(select_query, (username, self.hash_password(password)))
         user = cursor.fetchone()
 
         if(user):
             return Client(user[0], user[1], user[2], user[3])
         else:
             return False
-
-
-class CannotUseThis(Exception):
-    pass

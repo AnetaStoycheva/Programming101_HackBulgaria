@@ -1,11 +1,3 @@
-import hashlib
-
-
-# hash_object = hashlib.sha1(b'Hello World')
-# hex_dig = hash_object.hexdigest()
-# print(hex_dig)
-
-
 class CliInterface:
     def __init__(self, sql_manager):
         self.__sql_manager = sql_manager
@@ -97,12 +89,14 @@ class CliInterface:
 
     def __changepass(self, logged_user):
         new_pass = input('Enter your new password: ')
-        result = self.__sql_manager.change_pass(new_pass, logged_user)
+        new_pass2 = input('Enter your new password again: ')
+        if new_pass == new_pass2:
+            result = self.__sql_manager.change_pass(new_pass, logged_user)
 
-        if result:
-            print('You succesfully changed your password!')
-        else:
-            print('Changing password failed!')
+            if result:
+                print('You succesfully changed your password!')
+            else:
+                print('Changing password failed!')
 
     def __change_message(self, logged_user):
         new_message = input('Enter your new message: ')
