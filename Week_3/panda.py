@@ -113,7 +113,7 @@ class PandaSocialNetwork:
         found = False
 
         while len(queue) > 0:
-            current_panda = queue.pop()
+            current_panda = queue.pop(0)
             if current_panda == panda2:
                 found = True
                 break
