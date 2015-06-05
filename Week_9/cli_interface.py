@@ -21,6 +21,8 @@ class CliInterface:
             self.__register()
         elif command == 'login':
             self.__login()
+        elif command == 'send-reset-password':
+            self.__send_reset_password()
         elif command == 'help':
             self.__help()
         elif command == 'exit':
@@ -30,9 +32,10 @@ class CliInterface:
 
     def __register(self):
         username = input('Enter your username: ')
+        email = input('Enter your email: ')
         password = getpass.getpass('Enter your password: ')
 
-        result = self.__sql_manager.register(username, password)
+        result = self.__sql_manager.register(username, email, password)
 
         if result:
             print('Registration Successful')
@@ -50,9 +53,15 @@ class CliInterface:
         else:
             print('Login failed')
 
+    def __send_reset_password(self):
+        username = input('Enter your username: ')
+        self.__sql_manager.send_mail(username)
+        print('You will receive an email with instructions in it.')
+
     def __help(self):
         print('login - for logging in!')
         print('register - for creating new account!')
+        print('send-reset-password - for changign password!')
         print('exit - for closing program!')
         print('help - for helping! ;)')
 
